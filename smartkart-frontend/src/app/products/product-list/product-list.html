@@ -1,0 +1,9 @@
+<div class="grid">
+  <mat-card *ngFor="let p of products">
+    <mat-card-title>{{ p.name }}</mat-card-title>
+    <mat-card-content>
+      ₹{{ p.price }}
+    </mat-card-content>
+    <button mat-button color="primary" (click)="addToCart(p)">Add to Cart</button>
+  </mat-card>
+</div>

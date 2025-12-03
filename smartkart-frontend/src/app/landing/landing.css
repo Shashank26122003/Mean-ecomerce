@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: Roboto, sans-serif;
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.landing-card {
+  max-width: 420px;
+  margin: 80px auto;
+  padding: 30px 25px;
+  border-radius: 15px;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  transition: transform 0.3s ease;
+}
+
+.landing-card:hover { transform: translateY(-5px); }
+
+.logo { text-align: center; margin-bottom: 20px; }
+.logo h1 { margin: 0; font-size: 2.5rem; color: #1e3a8a; font-weight: 700; }
+.logo .tagline { margin-top: 5px; font-size: 1rem; color: #3b82f6; font-weight: 500; }
+
+.form { display: flex; flex-direction: column; margin-top: 10px; }
+.full { width: 100%; margin-bottom: 20px; }
+
+.mat-tab-group { margin-top: 10px; }
+.mat-tab-label { font-weight: 600; color: #1e3a8a; }
+.mat-tab-label.mat-tab-label-active { color: #3b82f6 !important; }
+
+.action-btn { width: 100%; padding: 10px 0; font-weight: 600; font-size: 1rem; border-radius: 8px; display: flex; justify-content: center; align-items: center; }
+.action-btn mat-progress-spinner { margin-right: 8px; }
+
+.error { color: #b00020; font-size: 0.9rem; margin-bottom: 10px; }
+
+@media screen and (max-width: 480px) {
+  .landing-card { margin: 40px 15px; padding: 25px 15px; }
+  .logo h1 { font-size: 2rem; }
+}

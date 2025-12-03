@@ -1,0 +1,10 @@
+<mat-toolbar color="primary">
+  <span>SmartKart</span>
+  <span class="spacer"></span>
+
+  <button mat-button routerLink="/products" *ngIf="isLoggedIn()">Products</button>
+  <button mat-button routerLink="/cart" *ngIf="isUser()">Cart</button>
+  <button mat-button routerLink="/orders" *ngIf="isUser()">Orders</button>
+  <button mat-button routerLink="/admin" *ngIf="isAdmin()">Admin Panel</button>
+  <button mat-button routerLink="/landing" *ngIf="!isLoggedIn()">Login / SignUp</button>
+</mat-toolbar>

@@ -1,0 +1,8 @@
+<mat-card>
+  <h2>Your Orders</h2>
+
+  <div *ngFor="let o of orders" class="order">
+    <p>Order ID: {{ o._id }}</p>
+    <p>Total: ₹{{ o.total }}</p>
+  </div>
+</mat-card>
