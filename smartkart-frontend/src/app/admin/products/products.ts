@@ -1,38 +1,49 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from '../../services/auth';
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
-  templateUrl: './products.component.html',
+  imports: [CommonModule],
+  templateUrl: './products.html',
 })
 export class ProductsComponent implements OnInit {
   products: any[] = [];
+  loading: boolean = true;
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private auth: AuthService
+  ) {}
 
   ngOnInit() {
-    this.loadProducts();
+    const role = this.auth.getRole();
+
+    // ✅ ADMIN → auto import then fetch
+    if (role === 'admin') {
+      this.productService.importProducts().subscribe({
+        next: () => this.loadProducts(),
+        error: () => this.loadProducts()
+      });
+    }
+    // ✅ USER → only fetch
+    else {
+      this.loadProducts();
+    }
   }
 
   loadProducts() {
-    this.productService.getProducts().subscribe(data => {
-      this.products = data;
-    });
-  }
-
-  deleteProduct(id: string) {
-    this.productService.deleteProduct(id).subscribe(() => {
-      this.loadProducts();
-    });
-  }
-
-  importProducts() {
-    this.productService.importProducts().subscribe(() => {
-      this.loadProducts();
+    this.productService.getProducts().subscribe({
+      next: data => {
+        this.products = data;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('Product load failed:', err);
+        this.loading = false;
+      }
     });
   }
 }

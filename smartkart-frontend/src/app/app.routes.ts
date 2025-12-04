@@ -6,22 +6,17 @@ import { UserGuard } from './guards/user-guard';
 import { ProductsComponent } from './products/products/products';
 
 export const routes: Routes = [
+  // ✅ LANDING (LOGIN / REGISTER)
   { path: '', component: Landing },
 
-  // USER SIDE (unchanged)
-  { 
-    path: 'products', 
-    component: ProductsComponent,
-    canActivate: [UserGuard]
-  },
+  // ✅ USER SIDE
+  { path: 'products', component: ProductsComponent, canActivate: [UserGuard] },
+ // { path: 'cart', component: CartComponent, canActivate: [UserGuard] },
+ // { path: 'orders', component: OrdersComponent, canActivate: [UserGuard] },
 
-  // ADMIN DASHBOARD (unchanged)
-  { 
-    path: 'admin', 
-    component: AdminDashboardComponent,
-    canActivate: [AdminGuard]
-  },
+  // ✅ ADMIN SIDE
+  { path: 'admin', component: AdminDashboardComponent, canActivate: [AdminGuard] },
 
-  // fallback
+  // ✅ FALLBACK
   { path: '**', redirectTo: '' }
 ];

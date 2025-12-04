@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, tap, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-// ✅ Exported interface for type safety
+// ✅ Response interface
 export interface AuthResponse {
   token: string;
   user?: {
@@ -16,67 +16,66 @@ export interface AuthResponse {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private tokenKey = 'auth_token';
-
-  // Use proxy in development or full backend URL
-  private baseUrl = 'http://localhost:5000/api/auth'; // Update to match backend prefix
+  private baseUrl = 'http://localhost:5000/api/auth';
 
   constructor(private http: HttpClient) {}
 
-  /** Login user */
+  // ✅ LOGIN
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, { email, password }).pipe(
-      tap((res: AuthResponse) => {
-        if (res.token) this.setToken(res.token);
-      }),
-      catchError(this.handleError)
-    );
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, { email, password })
+      .pipe(
+        tap((res: AuthResponse) => {
+          // ✅ Store token
+          localStorage.setItem(this.tokenKey, res.token);
+
+          // ✅ Store role for navbar & guards
+          if (res.user?.role) {
+            localStorage.setItem('role', res.user.role);
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
-  /** Signup user */
+  // ✅ SIGNUP
   signup(name: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, { name, email, password }).pipe(
-      tap((res: AuthResponse) => {
-        if (res.token) this.setToken(res.token);
-      }),
-      catchError(this.handleError)
-    );
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, { name, email, password })
+      .pipe(
+        tap((res: AuthResponse) => {
+          if (res.token) {
+            localStorage.setItem(this.tokenKey, res.token);
+
+            if (res.user?.role) {
+              localStorage.setItem('role', res.user.role);
+            }
+          }
+        }),
+        catchError(this.handleError)
+      );
   }
 
-  /** Store JWT token in localStorage */
-  setToken(token: string) {
-    localStorage.setItem(this.tokenKey, token);
-  }
-
-  /** Get JWT token */
+  // ✅ GET TOKEN
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  /** Get user role from token */
+  // ✅ GET ROLE
   getRole(): string | null {
-    const token = this.getToken();
-    if (!token) return null;
-
-    try {
-      const payload = JSON.parse(atob(token.split('.')[1]));
-      return payload.role;
-    } catch (e) {
-      console.error('Failed to decode token', e);
-      return null;
-    }
+    return localStorage.getItem('role');
   }
 
-  /** Check if user is logged in */
+  // ✅ CHECK LOGIN
   isLoggedIn(): boolean {
     return !!this.getToken();
   }
 
-  /** Logout */
+  // ✅ LOGOUT
   logout(): void {
     localStorage.removeItem(this.tokenKey);
+    localStorage.removeItem('role');
   }
 
-  /** Handle HTTP errors */
+  // ✅ ERROR HANDLING
   private handleError(error: HttpErrorResponse) {
     console.error('AuthService error:', error);
     return throwError(() => error);

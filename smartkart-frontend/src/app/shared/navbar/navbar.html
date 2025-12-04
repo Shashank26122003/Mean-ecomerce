@@ -1,22 +1,92 @@
-<mat-toolbar color="primary" class="navbar">
-  <span class="logo" (click)="router.navigate(['/'])">SmartKart</span>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary px-4 shadow">
+  <div class="container-fluid">
 
-  <span class="spacer"></span>
+    <!-- LOGO -->
+    <a class="navbar-brand fw-bold fs-4 text-white" role="button" (click)="goHome()">
+      SmartKart
+    </a>
 
-  <!-- Show login/register if not logged in -->
-  <ng-container *ngIf="!auth.isLoggedIn()">
-    <button mat-button (click)="router.navigate(['/'])">Login</button>
-    <button mat-button (click)="router.navigate(['/'])">Register</button>
-  </ng-container>
-
-  <!-- Show logout & dashboard if logged in -->
-  <ng-container *ngIf="auth.isLoggedIn()">
-    <button mat-button *ngIf="auth.getRole() === 'user'" (click)="router.navigate(['/products'])">
-      Products
+    <!-- TOGGLER -->
+    <button class="navbar-toggler bg-light" type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarContent">
+      <span class="navbar-toggler-icon"></span>
     </button>
-    <button mat-button *ngIf="auth.getRole() === 'admin'" (click)="router.navigate(['/admin'])">
-      Admin Dashboard
-    </button>
-    <button mat-button (click)="logout()">Logout</button>
-  </ng-container>
-</mat-toolbar>
+
+    <!-- LINKS -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+      <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+
+        <!-- ✅ NOT LOGGED IN -->
+        <ng-container *ngIf="!auth.isLoggedIn()">
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/">Login</a>
+          </li>
+        </ng-container>
+
+        <!-- ✅ USER -->
+        <ng-container *ngIf="auth.isLoggedIn() && auth.getRole() === 'user'">
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/products">
+              Products
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/cart">
+              Cart
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/orders">
+              My Orders
+            </a>
+          </li>
+
+          <li class="nav-item ms-lg-2">
+            <button class="btn btn-danger btn-sm" (click)="logout()">
+              Logout
+            </button>
+          </li>
+        </ng-container>
+
+        <!-- ✅ ADMIN -->
+        <ng-container *ngIf="auth.isLoggedIn() && auth.getRole() === 'admin'">
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/admin">
+              Dashboard
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/admin/products">
+              Products
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/admin/orders">
+              Orders
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link text-white fw-semibold" routerLink="/admin/users">
+              Users
+            </a>
+          </li>
+
+          <li class="nav-item ms-lg-2">
+            <button class="btn btn-danger btn-sm" (click)="logout()">
+              Logout
+            </button>
+          </li>
+
+        </ng-container>
+
+      </ul>
+    </div>
+  </div>
+</nav>

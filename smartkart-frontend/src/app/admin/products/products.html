@@ -1,25 +1,55 @@
-<h2>Manage Products</h2>
+<div class="container mt-4">
 
-<button mat-raised-button color="primary" (click)="importProducts()">
-  Import Products
-</button>
+  <h2 class="fw-bold mb-4 text-primary text-center">
+    All Products
+  </h2>
 
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Price</th>
-    <th>Category</th>
-    <th>Actions</th>
-  </tr>
+  <!-- LOADING -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border text-primary"></div>
+    <p class="mt-2">Loading products...</p>
+  </div>
 
-  <tr *ngFor="let p of products">
-    <td>{{ p.name }}</td>
-    <td>{{ p.price }}$</td>
-    <td>{{ p.category?.name }}</td>
-    <td>
-      <button mat-button color="warn" (click)="deleteProduct(p._id)">
-        Delete
-      </button>
-    </td>
-  </tr>
-</table>
+  <!-- EMPTY -->
+  <div *ngIf="!loading && products.length === 0"
+       class="alert alert-info text-center">
+    No products available.
+  </div>
+
+  <!-- PRODUCTS GRID -->
+  <div class="row g-4" *ngIf="!loading && products.length > 0">
+
+    <div class="col-md-4" *ngFor="let p of products">
+      <div class="card h-100 shadow-sm" role="button">
+
+        <img *ngIf="p.images?.length"
+             [src]="p.images[0]"
+             class="card-img-top"
+             style="height: 230px; object-fit: cover;">
+
+        <div class="card-body d-flex flex-column">
+
+          <h5 class="fw-bold">{{ p.name }}</h5>
+
+          <p class="small text-muted">
+            {{ p.category?.name }}
+          </p>
+
+          <p class="card-text">
+            {{ p.description | slice:0:70 }}...
+          </p>
+
+          <h5 class="fw-bold text-success mt-auto">
+            ₹{{ p.price }}
+          </h5>
+
+          <button class="btn btn-primary mt-2">
+            Add to Cart
+          </button>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

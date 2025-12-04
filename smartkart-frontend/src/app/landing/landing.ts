@@ -1,6 +1,6 @@
 import { Component, NgZone, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { AuthService, AuthResponse } from '../services/auth';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -30,17 +30,22 @@ import { MatTabsModule } from '@angular/material/tabs';
 export class Landing {
   loginForm: FormGroup;
   signupForm: FormGroup;
+
   loadingLogin = false;
   loadingSignup = false;
+
   loginError = '';
   signupError = '';
+
+  selectedTabIndex = 0;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private authService: AuthService,
     private ngZone: NgZone,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private route: ActivatedRoute
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -52,9 +57,15 @@ export class Landing {
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+
+    // ✅ Auto switch tab from navbar
+    this.route.queryParams.subscribe(params => {
+      if (params['tab'] === 'signup') this.selectedTabIndex = 1;
+      else this.selectedTabIndex = 0;
+    });
   }
 
-  /** Login */
+  /** LOGIN */
   onLogin(): void {
     if (this.loginForm.invalid) return;
 
@@ -64,7 +75,7 @@ export class Landing {
     const { email, password } = this.loginForm.value;
 
     this.authService.login(email, password).subscribe({
-      next: (res: AuthResponse) => {
+      next: () => {
         const role = this.authService.getRole();
         this.ngZone.run(() => {
           if (role === 'admin') this.router.navigate(['/admin']);
@@ -83,7 +94,7 @@ export class Landing {
     });
   }
 
-  /** Signup */
+  /** SIGNUP */
   onSignUp(): void {
     if (this.signupForm.invalid) return;
 
@@ -93,9 +104,9 @@ export class Landing {
     const { name, email, password } = this.signupForm.value;
 
     this.authService.signup(name, email, password).subscribe({
-      next: (res: AuthResponse) => {
+      next: () => {
         this.ngZone.run(() => {
-          this.router.navigate(['/products']); // navigate after successful signup
+          this.router.navigate(['/products']);
         });
       },
       error: (err: any) => {

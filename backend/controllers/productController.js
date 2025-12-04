@@ -1,64 +1,69 @@
 const Product = require("../models/product");
-const importProducts = require("../services/importProducts");
+const Category = require("../models/category");
+const axios = require("axios");
+const https = require("https");
 
-// Get all products
+// ✅ GET PRODUCTS (USER + ADMIN)
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find().populate("category");
     res.json(products);
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    res.status(500).json({ message: "Failed to load products" });
   }
 };
 
-// Get single product by ID
-exports.getProductById = async (req, res) => {
-  try {
-    const product = await Product.findById(req.params.id);
-    if (!product) return res.status(404).json({ message: "Product not found" });
-    res.json(product);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// Create new product manually
-exports.createProduct = async (req, res) => {
-  try {
-    const product = await Product.create(req.body);
-    res.status(201).json(product);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// Update product
-exports.updateProduct = async (req, res) => {
-  try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!product) return res.status(404).json({ message: "Product not found" });
-    res.json(product);
-  } catch (err) {
-    res.status(400).json({ message: err.message });
-  }
-};
-
-// Delete product
-exports.deleteProduct = async (req, res) => {
-  try {
-    await Product.findByIdAndDelete(req.params.id);
-    res.json({ message: "Product deleted" });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-};
-
-// Import products from external API
+// ✅ IMPORT PRODUCTS (ADMIN)
 exports.importProducts = async (req, res) => {
   try {
-    await importProducts();
+    const agent = new https.Agent({ rejectUnauthorized: false });
+    const response = await axios.get(
+      "https://dummyjson.com/products",
+      { httpsAgent: agent }
+    );
+
+    const products = response.data.products;
+
+    for (const p of products) {
+      let category = await Category.findOne({ name: p.category });
+      if (!category) category = await Category.create({ name: p.category });
+
+      const exists = await Product.findOne({ name: p.title });
+      if (exists) continue;
+
+      await Product.create({
+        name: p.title,
+        description: p.description,
+        price: p.price,
+        category: category._id,
+        stock: p.stock || 0,
+        images: p.images || []
+      });
+    }
+
     res.json({ message: "Products imported successfully" });
   } catch (err) {
-    res.status(500).json({ message: "Failed to import products", error: err.message });
+    res.status(500).json({ message: "Import failed" });
   }
+};
+
+// ✅ OPTIONAL (if you already have these)
+exports.getProductById = async (req, res) => {
+  const product = await Product.findById(req.params.id).populate("category");
+  res.json(product);
+};
+
+exports.createProduct = async (req, res) => {
+  const product = await Product.create(req.body);
+  res.json(product);
+};
+
+exports.updateProduct = async (req, res) => {
+  const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
+  res.json(product);
+};
+
+exports.deleteProduct = async (req, res) => {
+  await Product.findByIdAndDelete(req.params.id);
+  res.json({ message: "Deleted" });
 };

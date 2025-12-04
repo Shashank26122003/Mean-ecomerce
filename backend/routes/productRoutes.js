@@ -10,14 +10,18 @@ const {
   importProducts
 } = require("../controllers/productController");
 
-// Public routes
-router.get("/", getProducts);           // Get all products
-router.get("/:id", getProductById);    // Get product by ID
+// ✅ PUBLIC ROUTE (USER fetch)
+router.get("/", getProducts);
 
-// Admin-only routes
-router.post("/", auth, adminOnly, createProduct);      // Create product manually
-router.put("/:id", auth, adminOnly, updateProduct);   // Update product
-router.delete("/:id", auth, adminOnly, deleteProduct);// Delete product
-router.post("/import", auth, adminOnly, importProducts); // Import products from API
+// ✅ ADMIN IMPORT (MUST come before :id)
+router.post("/import", auth, adminOnly, importProducts);
+
+// ✅ ADMIN CRUD
+router.post("/", auth, adminOnly, createProduct);
+router.put("/:id", auth, adminOnly, updateProduct);
+router.delete("/:id", auth, adminOnly, deleteProduct);
+
+// ✅ SINGLE PRODUCT (MUST be last)
+router.get("/:id", getProductById);
 
 module.exports = router;

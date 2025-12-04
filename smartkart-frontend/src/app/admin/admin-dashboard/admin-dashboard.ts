@@ -4,7 +4,10 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+
 import { UsersComponent } from '../users/users';
+import { ProductsComponent } from '../products/products';
+import { Orders } from '../orders/orders';   // ✅ ADD THIS
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,7 +18,9 @@ import { UsersComponent } from '../users/users';
     MatListModule,
     MatIconModule,
     MatButtonModule,
-    UsersComponent
+    UsersComponent,
+    ProductsComponent,
+    Orders        // ✅ ADD THIS
   ],
   templateUrl: './admin-dashboard.html',
   styleUrls: ['./admin-dashboard.css'],
