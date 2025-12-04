@@ -1,10 +1,22 @@
-<mat-toolbar color="primary">
-  <span>SmartKart</span>
+<mat-toolbar color="primary" class="navbar">
+  <span class="logo" (click)="router.navigate(['/'])">SmartKart</span>
+
   <span class="spacer"></span>
 
-  <button mat-button routerLink="/products" *ngIf="isLoggedIn()">Products</button>
-  <button mat-button routerLink="/cart" *ngIf="isUser()">Cart</button>
-  <button mat-button routerLink="/orders" *ngIf="isUser()">Orders</button>
-  <button mat-button routerLink="/admin" *ngIf="isAdmin()">Admin Panel</button>
-  <button mat-button routerLink="/landing" *ngIf="!isLoggedIn()">Login / SignUp</button>
+  <!-- Show login/register if not logged in -->
+  <ng-container *ngIf="!auth.isLoggedIn()">
+    <button mat-button (click)="router.navigate(['/'])">Login</button>
+    <button mat-button (click)="router.navigate(['/'])">Register</button>
+  </ng-container>
+
+  <!-- Show logout & dashboard if logged in -->
+  <ng-container *ngIf="auth.isLoggedIn()">
+    <button mat-button *ngIf="auth.getRole() === 'user'" (click)="router.navigate(['/products'])">
+      Products
+    </button>
+    <button mat-button *ngIf="auth.getRole() === 'admin'" (click)="router.navigate(['/admin'])">
+      Admin Dashboard
+    </button>
+    <button mat-button (click)="logout()">Logout</button>
+  </ng-container>
 </mat-toolbar>

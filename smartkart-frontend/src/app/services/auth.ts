@@ -34,7 +34,7 @@ export class AuthService {
 
   /** Signup user */
   signup(name: string, email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.baseUrl}/signup`, { name, email, password }).pipe(
+    return this.http.post<AuthResponse>(`${this.baseUrl}/register`, { name, email, password }).pipe(
       tap((res: AuthResponse) => {
         if (res.token) this.setToken(res.token);
       }),

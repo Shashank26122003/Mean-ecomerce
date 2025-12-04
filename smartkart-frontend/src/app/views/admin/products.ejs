@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Manage Products</title>
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 10px; text-align: left; }
+    th { background: #f4f4f4; }
+    a.button { padding: 5px 10px; background: #28a745; color: #fff; text-decoration: none; border-radius: 4px; }
+    a.button.delete { background: #dc3545; }
+  </style>
+</head>
+<body>
+  <h1>Manage Products</h1>
+  <a href="/admin/products/add" class="button">+ Add New Product</a>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Stock</th>
+        <th>Category</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% products.forEach(product => { %>
+        <tr>
+          <td><%= product.name %></td>
+          <td>$<%= product.price.toFixed(2) %></td>
+          <td><%= product.stock %></td>
+          <td><%= product.category ? product.category.name : "N/A" %></td>
+          <td>
+            <a href="/admin/products/edit/<%= product._id %>" class="button">Edit</a>
+            <a href="/admin/products/delete/<%= product._id %>" class="button delete">Delete</a>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>

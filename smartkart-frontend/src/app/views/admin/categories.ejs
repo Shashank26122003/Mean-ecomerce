@@ -1,0 +1,23 @@
+<h1>Categories</h1>
+<a href="/admin/categories/add">Add Category</a>
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% categories.forEach(category => { %>
+    <tr>
+      <td><%= category.name %></td>
+      <td>
+        <a href="/admin/categories/edit/<%= category._id %>">Edit</a>
+        <form action="/admin/categories/delete/<%= category._id %>" method="POST" style="display:inline;">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+    <% }) %>
+  </tbody>
+</table>

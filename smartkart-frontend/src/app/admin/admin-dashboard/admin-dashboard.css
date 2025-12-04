@@ -1,0 +1,59 @@
+/* Sidenav layout */
+.sidenav-container {
+    height: 100vh;
+    display: flex;
+    background: #f4f6f8;
+  }
+  
+  .sidenav {
+    width: 240px;
+    background: #1976d2;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding-top: 1rem;
+  }
+  
+  .admin-title {
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #ffffff;
+  }
+  
+  mat-list-item {
+    cursor: pointer;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin: 4px 8px;
+    transition: background 0.3s;
+  }
+  
+  mat-list-item.active,
+  mat-list-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  mat-list-item mat-icon {
+    margin-right: 16px;
+  }
+  
+  /* Main content */
+  .content {
+    flex: 1;
+    padding: 2rem;
+  }
+  
+  .section-header h2 {
+    font-size: 26px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #1976d2;
+  }
+  
+  .section-content p {
+    font-size: 18px;
+    line-height: 1.6;
+  }
+  

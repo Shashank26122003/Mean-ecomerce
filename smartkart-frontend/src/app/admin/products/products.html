@@ -1,0 +1,25 @@
+<h2>Manage Products</h2>
+
+<button mat-raised-button color="primary" (click)="importProducts()">
+  Import Products
+</button>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Price</th>
+    <th>Category</th>
+    <th>Actions</th>
+  </tr>
+
+  <tr *ngFor="let p of products">
+    <td>{{ p.name }}</td>
+    <td>{{ p.price }}$</td>
+    <td>{{ p.category?.name }}</td>
+    <td>
+      <button mat-button color="warn" (click)="deleteProduct(p._id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+</table>

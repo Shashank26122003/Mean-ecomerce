@@ -1,57 +1,65 @@
-<mat-card class="landing-card">
-  <div class="logo">
-    <h1>SmartKart</h1>
-    <p class="tagline">Shop the Best Products Online</p>
-  </div>
+<div class="landing-container">
+  <mat-card class="landing-card">
+    <div class="landing-header">
+      <h2>Welcome to SmartKart</h2>
+      <p class="tagline">Your one-stop online shopping platform</p>
+    </div>
 
-  <mat-tab-group class="tab-group">
-    <mat-tab label="Login">
-      <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="form">
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" placeholder="Enter your email">
-        </mat-form-field>
+    <mat-tab-group class="tab-group" mat-stretch-tabs>
+      <!-- Login Tab -->
+      <mat-tab label="Login">
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="form">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter your email">
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" placeholder="Enter your password">
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Enter your password">
+          </mat-form-field>
 
-        <div class="error" *ngIf="loginError">{{ loginError }}</div>
+          <div class="error" *ngIf="loginError">{{ loginError }}</div>
 
-        <button mat-raised-button color="primary" type="submit"
-                [disabled]="loginForm.invalid || loadingLogin">
-          <mat-progress-spinner *ngIf="loadingLogin" diameter="20" mode="indeterminate"></mat-progress-spinner>
-          <span *ngIf="!loadingLogin">Login</span>
-        </button>
-      </form>
-    </mat-tab>
+          <button mat-raised-button color="primary" type="submit" class="btn-full"
+                  [disabled]="loginForm.invalid || loadingLogin">
+            <mat-progress-spinner *ngIf="loadingLogin" diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span *ngIf="!loadingLogin">Login</span>
+          </button>
+        </form>
+      </mat-tab>
 
-    <mat-tab label="Sign Up">
-      <form [formGroup]="signupForm" (ngSubmit)="onSignUp()" class="form">
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Name</mat-label>
-          <input matInput type="text" formControlName="name" placeholder="Enter your name">
-        </mat-form-field>
+      <!-- Sign Up Tab -->
+      <mat-tab label="Sign Up">
+        <form [formGroup]="signupForm" (ngSubmit)="onSignUp()" class="form">
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Name</mat-label>
+            <input matInput type="text" formControlName="name" placeholder="Enter your name">
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" formControlName="email" placeholder="Enter your email">
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" formControlName="email" placeholder="Enter your email">
+          </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" formControlName="password" placeholder="Create a password">
-        </mat-form-field>
+          <mat-form-field appearance="outline" class="full">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" placeholder="Create a password">
+          </mat-form-field>
 
-        <div class="error" *ngIf="signupError">{{ signupError }}</div>
+          <div class="error" *ngIf="signupError">{{ signupError }}</div>
 
-        <button mat-raised-button color="accent" type="submit"
-                [disabled]="signupForm.invalid || loadingSignup">
-          <mat-progress-spinner *ngIf="loadingSignup" diameter="20" mode="indeterminate"></mat-progress-spinner>
-          <span *ngIf="!loadingSignup">Sign Up</span>
-        </button>
-      </form>
-    </mat-tab>
-  </mat-tab-group>
-</mat-card>
+          <button mat-raised-button color="accent" type="submit" class="btn-full"
+                  [disabled]="signupForm.invalid || loadingSignup">
+            <mat-progress-spinner *ngIf="loadingSignup" diameter="20" mode="indeterminate"></mat-progress-spinner>
+            <span *ngIf="!loadingSignup">Sign Up</span>
+          </button>
+        </form>
+      </mat-tab>
+    </mat-tab-group>
+
+    <div class="landing-footer">
+      <p>Start your shopping journey today!</p>
+    </div>
+  </mat-card>
+</div>

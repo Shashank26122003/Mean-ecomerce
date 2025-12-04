@@ -1,22 +1,18 @@
 import { Component } from '@angular/core';
-import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/navbar/navbar';
+import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
-  imports : [Navbar,RouterOutlet],
+  standalone: true,
+  imports: [Navbar, RouterOutlet, CommonModule],
 })
 export class App {
+  // Navbar always visible on all pages including landing
   showNavbar = true;
 
-  constructor(private router: Router) {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe((event: NavigationEnd) => {
-      // Hide navbar on landing page
-      this.showNavbar = event.urlAfterRedirects === '/' ? false : true;
-    });
-  }
+  constructor() {}
 }

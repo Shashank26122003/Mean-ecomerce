@@ -1,0 +1,45 @@
+<div class="products-container">
+  <mat-progress-spinner *ngIf="loading" mode="indeterminate" diameter="50"></mat-progress-spinner>
+
+  <div *ngIf="!loading && error" class="error">{{ error }}</div>
+
+  <div *ngIf="!loading && products.length === 0 && !error">
+    No products available.
+  </div>
+
+  <div class="products-grid" *ngIf="!loading && products.length">
+    <mat-card class="product-card" *ngFor="let product of products">
+      
+      <!-- Main Image -->
+      <img 
+        [src]="getMainImage(product)" 
+        alt="{{ product.name }}" 
+        class="product-image"
+      />
+
+      <mat-card-header>
+        <mat-card-title>{{ product.name }}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <p>{{ product.description }}</p>
+        <p class="price">Price: ${{ product.price }}</p>
+      </mat-card-content>
+
+      <!-- Optional thumbnails for multiple images -->
+      <div class="thumbnails" *ngIf="product.images && product.images.length > 1">
+        <img 
+          *ngFor="let img of product.images.slice(1)"
+          [src]="img"
+          alt="{{ product.name }}"
+          class="thumbnail-image"
+        />
+      </div>
+
+      <mat-card-actions>
+        <button mat-raised-button color="primary">Add to Cart</button>
+      </mat-card-actions>
+      
+    </mat-card>
+  </div>
+</div>
